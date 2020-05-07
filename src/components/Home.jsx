@@ -1,20 +1,43 @@
 import React from "react"
-import { Link } from "gatsby"
-import ImageTest from '../images/gatsby-astronaut.png';
+import { Link, StaticQuery } from "gatsby"
+import { graphql } from "gatsby"
+import ImageTest from "../assets/images/gatsby-astronaut.png"
+import Img from "gatsby-image"
 
-const Home = () => (
-    <div className="container-home">
-        <h1> Título bonito</h1>
-        <h4> Texto bonito embaixo</h4>
-        <span className="span-block">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis eleifend lacus. Curabitur arcu dui, interdum eget ornare et, molestie et quam. Curabitur eget justo libero. Phasellus ut nunc lacinia, consequat purus sed, faucibus diam. Sed vitae massa sem. Nam condimentum lacus neque, sagittis porttitor magna accumsan ut. Quisque ac leo eu mi laoreet semper eget id felis.
-        </span>
-        <figure>
-            <img src={ImageTest} alt="Imagem de um Astronauta" className="container-home__img-astronauta"/>
-        </figure>
+const Home = ({ data }) => (
+  <div className="container-home">
+    <h1> Primeira página com gatsby!!</h1>
+    <p> O header fica em `gatsby-config.js`</p>
+    <span className="span-block">
+      - Inserir Imagem otimizada - Adicionar mais estilo - Graphql
+    </span>
+    <h4> Imagem otimizada </h4>
+    <figure>
+      <StaticQuery
+        query={graphql`
+          query {
+            file(relativePath: { eq: "gatsby-astronaut.png" }) {
+              childImageSharp {
+                fixed(width: 125, height: 125) {
+                  ...GatsbyImageSharpFixed
+                }
+              }
+            }
+          }
+        `}
+        render={data => <Img fixed={data.file.childImageSharp.fixed} />}
+      />
+    </figure>
+    <h4> Imagem não otimizada </h4>
+    <figure>
+      <img
+        src={ImageTest}
+        alt="Imagem de um Astronauta"
+        className="container-home__img-astronauta"
+      />
+    </figure>
+    <Link to="/page-2/">Página 2</Link>
+  </div>
+)
 
-        <Link to="/page-2/">Página 2</Link>
-    </div>
-);
-
-export default Home;
+export default Home
